@@ -67,7 +67,7 @@ class Task(models.Model):
     )
 
     class Meta:
-        ordering = ("-deadline", "priority",)
+        ordering = ("deadline", "priority",)
         verbose_name = _("task")
         verbose_name_plural = _("tasks")
 
