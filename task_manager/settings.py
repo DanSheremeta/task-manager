@@ -3,7 +3,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -15,7 +14,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -25,6 +23,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "crispy_forms",
+    "crispy_bootstrap4",
     "tasks",
 ]
 
@@ -56,8 +56,11 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "task_manager.wsgi.application"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+WSGI_APPLICATION = "task_manager.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -68,7 +71,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -89,6 +91,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = "tasks.Worker"
+
+LOGOUT_REDIRECT_URL = "accounts/login"
+LOGIN_REDIRECT_URL = "/"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

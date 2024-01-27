@@ -16,15 +16,17 @@
 <body>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-2">
-      {% block sidebar %}
-        {% include "includes/sidebar.html" %}
+    <div class="col-sm-12 mb-3 p-0">
+      {% block navigration %}
+        {% include "includes/navigration.html" %}
       {% endblock %}
     </div>
-    <div class="col-sm-10 ">
+    <div class="col-sm-12 mb-3">
       {% block content %}{% endblock %}
     </div>
   </div>
 </div>
+
+{% block scripts %}{% endblock %}
 </body>
 </html>
