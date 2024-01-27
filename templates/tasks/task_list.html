@@ -19,7 +19,15 @@
       <tr class="{% if task.is_completed %}table-success{% else %}table-active{% endif %}">
         <td>{{ task.name }}</td>
         <td>{{ task.task_type }}</td>
-        <td>{{ task.priority }}</td>
+        <td>
+          {% if task.priority == "low" %}
+            <span class="badge rounded-pill bg-primary">{{ task.priority }}</span>
+          {% elif task.priority == "medium" %}
+            <span class="badge rounded-pill bg-warning text-dark">{{ task.priority }}</span>
+          {% else %}
+            <span class="badge rounded-pill bg-danger">{{ task.priority }}</span>
+          {% endif %}
+        </td>
         <td>{{ task.deadline }}</td>
         <td>
           {% for assignee in task.assignees.all %}
@@ -30,7 +38,7 @@
           {% if task.is_completed %}
             <span class="badge badge-success">Completed</span>
           {% else %}
-            <span class="badge badge-warning">Pending</span>
+            <span class="badge badge-secondary">Pending</span>
           {% endif %}
         </td>
         <td>
