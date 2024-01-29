@@ -16,7 +16,7 @@
         <a class="nav-link" href="#">My tasks</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Add task</a>
+        <a class="nav-link" href="{% url 'tasks:task-create' %}">Add task</a>
       </li>
     </ul>
     {% if user.is_authenticated %}
