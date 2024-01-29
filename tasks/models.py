@@ -27,8 +27,8 @@ class Worker(AbstractUser):
         ordering = ("username",)
 
     def __str__(self):
-        return (f"{self.position} {self.username}"
-                f" ({self.first_name} {self.last_name})")
+        return (f"{self.first_name} {self.last_name}"
+                f" ({self.position})")
 
 
 class TaskType(models.Model):
