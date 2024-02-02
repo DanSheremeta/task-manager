@@ -13,7 +13,17 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     context_object_name = "task_list"
     template_name = "tasks/task_list.html"
-    paginate_by = 4
+    paginate_by = 6
+
+
+class UserTaskListView(LoginRequiredMixin, generic.ListView):
+    model = Task
+    context_object_name = "user_task_list"
+    template_name = "tasks/user_task_list.html"
+    paginate_by = 6
+
+    def get_queryset(self):
+        return Task.objects.filter(assignees=self.request.user)
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -29,7 +39,12 @@ class TaskCreateView(LoginRequiredMixin, generic.CreateView):
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Task
     form_class = TaskForm
-    success_url = reverse_lazy("tasks:task-detail")
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "tasks:task-detail",
+            kwargs={"pk": self.kwargs["pk"]}
+        )
 
 
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
