@@ -13,7 +13,7 @@
         <a class="nav-link" href="{% url 'tasks:task-list' %}">All tasks</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">My tasks</a>
+        <a class="nav-link" href="{% url 'tasks:user-task-list' %}">My tasks</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'tasks:task-create' %}">Add task</a>
