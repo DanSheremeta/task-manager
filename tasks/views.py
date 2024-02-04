@@ -5,7 +5,11 @@ from django.views import generic
 from django.shortcuts import render, redirect
 from django.views import View
 
-from tasks.forms import WorkerCreationForm, TaskForm
+from tasks.forms import (
+    WorkerCreationForm,
+    TaskForm,
+    TaskNameSearchForm
+)
 from tasks.models import Task, Position
 
 
@@ -14,6 +18,25 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "task_list"
     template_name = "tasks/task_list.html"
     paginate_by = 6
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TaskListView, self).get_context_data(**kwargs)
+
+        name = self.request.GET.get("name", "")
+
+        context["search_form"] = TaskListView(
+            initial={"name": name}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Task.objects.all()
+        form = TaskNameSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
 
 
 class UserTaskListView(LoginRequiredMixin, generic.ListView):
