@@ -1,11 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">Task Manager</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" href="#">Home</a>
       </li>
@@ -18,19 +14,20 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'tasks:task-create' %}">Add task</a>
       </li>
-      <li class="nav-item">
-        <div class="nav-item">{% include "includes/search.html" %}</div>
+      <li class="nav-item ml-1">
+        <div class="nav-bra">{% include "includes/search.html" %}</div>
       </li>
     </ul>
     {% if user.is_authenticated %}
       <ul class="navbar-nav ml-auto">
+
         <li class="nav-item">
           <a class="nav-link" href="{% url 'tasks:user-detail' user.id %}">{{ user.get_username }}</a>
         </li>
         <li class="nav-item">
           <form method="post" action="{% url 'logout' %}?next={{ request.path }}">
             {% csrf_token %}
-            <button type="submit" class="btn btn-link text-danger text-decoration-none">Logout</button>
+            <button type="submit" class="btn btn-outline-danger rounded-pill">Logout</button>
           </form>
         </li>
       </ul>
