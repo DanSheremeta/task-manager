@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
@@ -47,6 +47,12 @@ class UserTaskListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Task.objects.filter(assignees=self.request.user)
+
+
+class UserDetailView(LoginRequiredMixin, generic.DetailView):
+    model = get_user_model()
+    queryset = get_user_model().objects.all().prefetch_related("tasks__task_type")
+    template_name = "tasks/user_detail.html"
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
