@@ -48,10 +48,21 @@ class Task(models.Model):
         ("high", "High"),
     )
 
+    STATUS_CHOICES = (
+        ("to_do", "To Do"),
+        ("in_progress", "In progress"),
+        ("reviewing", "Reviewing"),
+        ("completed", "Completed"),
+    )
+
     name = models.CharField(max_length=255)
     description = models.TextField()
     deadline = models.DateField()
-    is_completed = models.BooleanField(default=False)
+    status = models.CharField(
+        max_length=30,
+        default="to_do",
+        choices=STATUS_CHOICES,
+    )
     priority = models.CharField(
         max_length=50,
         choices=PRIORITY_CHOICES,
@@ -67,7 +78,7 @@ class Task(models.Model):
     )
 
     class Meta:
-        ordering = ("is_completed", "deadline", "priority",)
+        ordering = ("deadline", "priority",)
         verbose_name = _("task")
         verbose_name_plural = _("tasks")
 
