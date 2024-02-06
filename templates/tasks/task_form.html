@@ -13,7 +13,7 @@
             {% csrf_token %}
             {{ form|crispy }}
             <div class="d-grid text-center">
-              <button type="submit" class="btn btn-outline-success pr-3 pl-3">{{ object|yesno:"Edit,Add" }} task</button>
+              <button type="submit" class="btn btn-outline-success pr-3 pl-3 rounded-pill">{{ object|yesno:"Edit,Add" }} task</button>
             </div>
           </form>
         </div>

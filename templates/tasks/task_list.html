@@ -16,7 +16,7 @@
                   {% if task.priority == "low" %}
                     <span class="badge rounded-pill bg-primary">{{ task.priority }}</span>
                   {% elif task.priority == "medium" %}
-                    <span class="badge rounded-pill bg-warning text-dark">{{ task.priority }}</span>
+                    <span class="badge rounded-pill bg-warning">{{ task.priority }}</span>
                   {% else %}
                     <span class="badge rounded-pill bg-danger">{{ task.priority }}</span>
                   {% endif %}
@@ -32,17 +32,15 @@
               </ul>
               <div class="mt-3">
                 <strong>Status:</strong>
-                {% if task.is_completed %}
-                  <span class="badge badge-success">Completed</span>
-                {% else %}
-                  <span class="badge badge-secondary">Pending</span>
-                {% endif %}
+                <span class="badge {{ task.is_completed|yesno:"badge-success,badge-secondary" }}">
+                  {{ task.is_completed|yesno:"Completed,Pending" }}
+                </span>
               </div>
             </div>
             <div class="card-footer text-muted text-center">
-              <a href="{% url 'tasks:task-detail' task.id %}" class="btn btn-primary">View</a>
-              <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-secondary">Edit</a>
-              <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger">Delete</a>
+              <a href="{% url 'tasks:task-detail' task.id %}" class="btn btn-primary rounded-pill">View</a>
+              <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-secondary rounded-pill">Edit</a>
+              <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger rounded-pill">Delete</a>
             </div>
           </div>
         </div>

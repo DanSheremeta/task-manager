@@ -8,8 +8,8 @@
         <form action="" method="post">
           {% csrf_token %}
           <div class="d-flex justify-content-center mt-3">
-            <button type="submit" class="btn btn-danger">Yes</button>
-            <a href="{% url 'tasks:task-detail' task.id %}" class="btn btn-secondary ml-2">Cancel</a>
+            <button type="submit" class="btn btn-danger rounded-pill">Yes</button>
+            <a href="{% url 'tasks:task-detail' task.id %}" class="btn btn-secondary ml-2 rounded-pill">Cancel</a>
           </div>
         </form>
       </div>
