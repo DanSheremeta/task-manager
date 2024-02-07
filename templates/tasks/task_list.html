@@ -40,9 +40,23 @@
               </ul>
               <div class="mt-3">
                 <strong>Status:</strong>
-                <span class="badge {{ task.is_completed|yesno:"badge-success,badge-secondary" }}">
-                  {{ task.is_completed|yesno:"Completed,Pending" }}
-                </span>
+                {% if task.status == "to_do" %}
+                  <span class="badge text-light" style="background-color: #c926c9">
+                    To Do
+                  </span>
+                {% elif task.status == "in_progress" %}
+                  <span class="badge text-light" style="background-color: #ffa600">
+                    In Progress
+                  </span>
+                {% elif task.status == "reviewing" %}
+                  <span class="badge badge-info">
+                    Reviewing
+                  </span>
+                {% elif task.status == "completed" %}
+                  <span class="badge badge-success">
+                    Completed
+                  </span>
+                {% endif %}
               </div>
             </div>
             <div class="card-footer text-muted text-center">
