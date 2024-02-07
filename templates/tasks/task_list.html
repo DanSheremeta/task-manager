@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>Tasks</title>
+  <title>
+    {% if only_current_user %}My {% else %}All {% endif %}Tasks
+  </title>
 {% endblock %}
 
 {% block content %}
   <div class="container mt-5">
-    <h2 class="text-center mb-4">All Tasks</h2>
+    <h2 class="text-center mb-4">
+      {% if only_current_user %}My {% else %}All {% endif %}Tasks
+    </h2>
 
     <div class="row">
       {% for task in task_list %}
@@ -54,7 +58,9 @@
         {% endif %}
       {% empty %}
         <div class="col-12">
-          <p class="text-center">There is no tasks yet.</p>
+          <p class="text-center">
+            {% if only_current_user %}You have {% else %}There is {% endif %}no tasks yet.
+          </p>
         </div>
       {% endfor %}
       </div>
