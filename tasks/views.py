@@ -41,9 +41,14 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
 class UserTaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
-    context_object_name = "user_task_list"
-    template_name = "tasks/user_task_list.html"
+    context_object_name = "task_list"
+    template_name = "tasks/task_list.html"
     paginate_by = 6
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(UserTaskListView, self).get_context_data(**kwargs)
+        context["only_current_user"] = True
+        return context
 
     def get_queryset(self):
         return Task.objects.filter(assignees=self.request.user)
