@@ -1,83 +1,87 @@
 {% extends "base.html" %}
 
 {% block title %}
-  <title>
-    {% if only_current_user %}My {% else %}All {% endif %}Tasks
-  </title>
+  <title>{% if only_current_user %}Your{% else %}All{% endif %} Tasks</title>
 {% endblock %}
 
 {% block content %}
-  <div class="container mt-5">
-    <h2 class="text-center mb-4">
-      {% if only_current_user %}My {% else %}All {% endif %}Tasks
-    </h2>
-
-    <div class="row">
-      {% for task in task_list %}
-        <div class="col-md-6 col-lg-4">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h4 class="card-title">{{ task.name }}</h4>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>Deadline:</strong> {{ task.deadline }}</li>
-                <li class="list-group-item"><strong>Priority:</strong>
-                  {% if task.priority == "low" %}
-                    <span class="badge rounded-pill bg-primary">{{ task.priority }}</span>
-                  {% elif task.priority == "medium" %}
-                    <span class="badge rounded-pill bg-warning">{{ task.priority }}</span>
-                  {% else %}
-                    <span class="badge rounded-pill bg-danger">{{ task.priority }}</span>
-                  {% endif %}
-                </li>
-                <li class="list-group-item"><strong>Type:</strong> {{ task.task_type.name }}</li>
-                <li class="list-group-item">
-                  <strong>Assignees:</strong>
-                  {% for assignee in task.assignees.all %}
-                    {{ assignee.get_full_name }}
-                    {% if not forloop.last %}, {% endif %}
-                  {% endfor %}
-                </li>
-              </ul>
-              <div class="mt-3">
-                <strong>Status:</strong>
-                {% if task.status == "to_do" %}
-                  <span class="badge text-light" style="background-color: #c926c9">
-                    To Do
-                  </span>
-                {% elif task.status == "in_progress" %}
-                  <span class="badge text-light" style="background-color: #ffa600">
-                    In Progress
-                  </span>
-                {% elif task.status == "reviewing" %}
-                  <span class="badge badge-info">
-                    Reviewing
-                  </span>
-                {% elif task.status == "completed" %}
-                  <span class="badge badge-success">
-                    Completed
-                  </span>
-                {% endif %}
+  <div class="container">
+    <div class="card">
+      <div class="card-header bg-dark text-light">
+        <h2 class="text-center mb-0">{% if only_current_user %}Your{% else %}All{% endif %} Tasks</h2>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          {% for task in task_list %}
+            <div class="col-md-6 col-lg-4">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h4 class="card-title">{{ task.name }}</h4>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Deadline:</strong> {{ task.deadline }}</li>
+                    <li class="list-group-item"><strong>Priority:</strong>
+                      {% if task.priority == "low" %}
+                        <span class="badge rounded-pill text-dark"
+                              style="background-color: #7bb9ff">{{ task.priority }}</span>
+                      {% elif task.priority == "medium" %}
+                        <span class="badge rounded-pill text-dark"
+                              style="background-color: #faba50">{{ task.priority }}</span>
+                      {% else %}
+                        <span class="badge rounded-pill text-dark"
+                              style="background-color: #fa6b6b">{{ task.priority }}</span>
+                      {% endif %}
+                    </li>
+                    <li class="list-group-item"><strong>Type:</strong> {{ task.task_type.name }}</li>
+                    <li class="list-group-item">
+                      <strong>Assignees:</strong>
+                      {% for assignee in task.assignees.all %}
+                        {{ assignee.get_full_name }}
+                        {% if not forloop.last %}, {% endif %}
+                      {% endfor %}
+                    </li>
+                  </ul>
+                  <div class="mt-3">
+                    <strong>Status:</strong>
+                    {% if task.status == "to_do" %}
+                      <span class="badge text-light" style="background-color: #7d73d0">
+                          To Do
+                        </span>
+                    {% elif task.status == "in_progress" %}
+                      <span class="badge text-light" style="background-color: #7696d9">
+                          In Progress
+                        </span>
+                    {% elif task.status == "reviewing" %}
+                      <span class="badge text-light" style="background-color: #5eb4c2">
+                          Reviewing
+                        </span>
+                    {% elif task.status == "completed" %}
+                      <span class="badge text-light" style="background-color: #5ab090">
+                          Completed
+                        </span>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="card-footer text-muted text-center">
+                  <a href="{% url 'tasks:task-detail' task.id %}" class="btn btn-primary rounded-pill">View</a>
+                  <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-secondary rounded-pill">Edit</a>
+                  <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger rounded-pill">Delete</a>
+                </div>
               </div>
             </div>
-            <div class="card-footer text-muted text-center">
-              <a href="{% url 'tasks:task-detail' task.id %}" class="btn btn-primary rounded-pill">View</a>
-              <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-secondary rounded-pill">Edit</a>
-              <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger rounded-pill">Delete</a>
+            {% if forloop.counter|divisibleby:3 and not forloop.last %}
+              </div>
+              <div class="row">
+            {% endif %}
+          {% empty %}
+            <div class="col-12">
+              <p class="text-center">
+                {% if only_current_user %}You have {% else %}There is {% endif %}no tasks yet.
+              </p>
             </div>
+          {% endfor %}
           </div>
-        </div>
-        {% if forloop.counter|divisibleby:3 %}
-          </div>
-          <div class="row">
-        {% endif %}
-      {% empty %}
-        <div class="col-12">
-          <p class="text-center">
-            {% if only_current_user %}You have {% else %}There is {% endif %}no tasks yet.
-          </p>
-        </div>
-      {% endfor %}
       </div>
-    {% include "includes/pagination.html" %}
+          {% include "includes/pagination.html" %}
+    </div>
   </div>
 {% endblock %}
