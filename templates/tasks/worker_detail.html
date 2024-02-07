@@ -19,8 +19,8 @@
                     <p class="card-text"><strong>Email:</strong> {{ worker.email }}</p>
                 </div>
                 <div class="card-body m-auto">
-                    <a href="{% url 'tasks:user-task-list' %}" class="btn btn-info rounded-pill">Your tasks</a>
-                    <a href="#" class="btn btn-secondary rounded-pill">Change your profile</a>
+                    <a href="{% url 'tasks:worker-task-list' %}" class="btn btn-info rounded-pill">Your tasks</a>
+                    <a href="{% url 'tasks:worker-update' user.id %}" class="btn btn-secondary rounded-pill">Change your profile</a>
                 </div>
             </div>
         </div>

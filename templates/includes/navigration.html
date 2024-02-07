@@ -9,7 +9,7 @@
         <a class="nav-link" href="{% url 'tasks:task-list' %}">All tasks</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'tasks:user-task-list' %}">Your tasks</a>
+        <a class="nav-link" href="{% url 'tasks:worker-task-list' %}">Your tasks</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'tasks:task-create' %}">Add task</a>
@@ -22,7 +22,7 @@
       <ul class="navbar-nav ml-auto">
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'tasks:user-detail' user.id %}">{{ user.get_username }}</a>
+          <a class="nav-link" href="{% url 'tasks:worker-detail' user.id %}">{{ user.get_username }}</a>
         </li>
         <li class="nav-item">
           <form method="post" action="{% url 'logout' %}?next={{ request.path }}">
