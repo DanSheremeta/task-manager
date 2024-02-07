@@ -129,5 +129,5 @@ class WorkerRegistrationView(View):
             return render(
                 request,
                 self.template_name,
-                {"form": form, "positions": positions, "registration": True}
+                {"form": form, "positions": positions}
             )
