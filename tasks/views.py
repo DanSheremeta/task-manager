@@ -7,8 +7,9 @@ from django.views import View
 
 from tasks.forms import (
     WorkerCreationForm,
+    WorkerUpdateForm,
     TaskForm,
-    TaskNameSearchForm
+    TaskNameSearchForm,
 )
 from tasks.models import Task, Position
 
@@ -39,14 +40,14 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
             )
 
 
-class UserTaskListView(LoginRequiredMixin, generic.ListView):
+class WorkerTaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     context_object_name = "task_list"
     template_name = "tasks/task_list.html"
     paginate_by = 6
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(UserTaskListView, self).get_context_data(**kwargs)
+        context = super(WorkerTaskListView, self).get_context_data(**kwargs)
         context["only_current_user"] = True
         return context
 
@@ -54,10 +55,25 @@ class UserTaskListView(LoginRequiredMixin, generic.ListView):
         return Task.objects.filter(assignees=self.request.user)
 
 
-class UserDetailView(LoginRequiredMixin, generic.DetailView):
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
     queryset = get_user_model().objects.all().prefetch_related("tasks__task_type")
-    template_name = "tasks/user_detail.html"
+    template_name = "tasks/worker_detail.html"
+
+
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = get_user_model()
+    form_class = WorkerUpdateForm
+    template_name = "tasks/worker_form.html"
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "tasks:worker-detail",
+            kwargs={"pk": self.kwargs["pk"]}
+        )
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -87,7 +103,7 @@ class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class WorkerRegistrationView(View):
-    template_name = "registration/worker_registration.html"
+    template_name = "tasks/worker_form.html"
 
     def get(self, request, *args, **kwargs):
         positions = Position.objects.all()
@@ -113,5 +129,5 @@ class WorkerRegistrationView(View):
             return render(
                 request,
                 self.template_name,
-                {"form": form, "positions": positions}
+                {"form": form, "positions": positions, "registration": True}
             )
