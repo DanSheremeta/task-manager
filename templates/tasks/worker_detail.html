@@ -17,6 +17,7 @@
                     <p class="card-text"><strong>Username:</strong> {{ worker.username }}</p>
                     <p class="card-text"><strong>Position:</strong> {{ worker.position.name }}</p>
                     <p class="card-text"><strong>Email:</strong> {{ worker.email }}</p>
+                    <p class="card-text"><strong>You are submited in {{ worker.tasks.count }} task{{ worker.tasks.count|pluralize }}.</strong></p>
                 </div>
                 <div class="card-body m-auto">
                     <a href="{% url 'tasks:worker-task-list' %}" class="btn btn-info rounded-pill">Your tasks</a>

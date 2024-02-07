@@ -40,6 +40,22 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
             )
 
 
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Task
+    form_class = TaskForm
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "tasks:task-detail",
+            kwargs={"pk": self.kwargs["pk"]}
+        )
+
+
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy("tasks:task-list")
+
+
 class WorkerTaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     context_object_name = "task_list"
@@ -79,26 +95,19 @@ class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TaskDetailView, self).get_context_data(**kwargs)
+        _id = self.request.user.id
+        context["to_do"] = Task.objects.all()
+        context["in_progress"] = Task.objects.filter(status="in_progress")
+        context["reviewing"] = Task.objects.filter(status="reviewing")
+        context["completed"] = Task.objects.filter(status="completed")
+        return context
+
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
     form_class = TaskForm
-    success_url = reverse_lazy("tasks:task-list")
-
-
-class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Task
-    form_class = TaskForm
-
-    def get_success_url(self):
-        return reverse_lazy(
-            "tasks:task-detail",
-            kwargs={"pk": self.kwargs["pk"]}
-        )
-
-
-class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Task
     success_url = reverse_lazy("tasks:task-list")
 
 
