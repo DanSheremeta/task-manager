@@ -3,16 +3,18 @@ from django.urls import path
 from tasks.views import (
     TaskListView,
     WorkerTaskListView,
+    WorkerRegistrationView,
     WorkerDetailView,
     WorkerUpdateView,
     TaskDetailView,
     TaskCreateView,
     TaskUpdateView,
     TaskDeleteView,
-    WorkerRegistrationView,
+    HomePageView,
 )
 
 urlpatterns = [
+    path("home/", HomePageView.as_view(), name="home"),
     path("", TaskListView.as_view(), name="task-list"),
     path("mytasks/", WorkerTaskListView.as_view(), name="worker-task-list"),
     path("profile/<int:pk>/", WorkerDetailView.as_view(), name="worker-detail"),

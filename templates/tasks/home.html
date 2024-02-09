@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}
+  <title>Home Page - Task Manager</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+
+    <div class="card">
+      <div class="card-header bg-dark text-light">
+        <h3 class="text-center mb-0">Statistics</h3>
+      </div>
+      <div class="card-body">
+        <div class="row justify-content-center">
+          <h2 class="mr-2">
+            <span class="badge rounded-pill text-light" style="background-color: #7d73d0">
+              To Do
+              <span class="badge rounded-pill" style="background-color: #4c3db9">{{ tasks_status_count.to_do }}</span>
+            </span>
+          </h2>
+          <h2 class="mr-2">
+            <span class="badge rounded-pill text-light" style="background-color: #7696d9">
+              In Progress
+              <span class="badge rounded-pill"
+                    style="background-color: #3a64c4">{{ tasks_status_count.in_progress }}</span>
+            </span>
+          </h2>
+          <h2 class="mr-2">
+            <span class="badge rounded-pill text-light" style="background-color: #5eb4c2">
+              Reviewing
+              <span class="badge rounded-pill"
+                    style="background-color: #278a9a">{{ tasks_status_count.reviewing }}</span>
+            </span>
+          </h2>
+          <h2 class="mr-2">
+            <span class="badge rounded-pill text-light" style="background-color: #5ab090">
+              Completed
+              <span class="badge rounded-pill"
+                    style="background-color: #308665">{{ tasks_status_count.completed }}</span>
+            </span>
+          </h2>
+        </div>
+        <hr>
+        <div class="row justify-content-center">
+          <h2 class="mr-2">
+            <span class="badge rounded-pill text-light" style="background-color: #7bb9ff">
+              Low
+              <span class="badge rounded-pill" style="background-color: #4793ea">{{ tasks_status_count.to_do }}</span>
+            </span>
+          </h2>
+          <h2 class="mr-2">
+            <span class="badge rounded-pill text-light" style="background-color: #faba50">
+              Medium
+              <span class="badge rounded-pill"
+                    style="background-color: #ce8f1b">{{ tasks_status_count.in_progress }}</span>
+            </span>
+          </h2>
+          <h2 class="mr-2">
+            <span class="badge rounded-pill text-light" style="background-color: #fa6b6b">
+              High
+              <span class="badge rounded-pill"
+                    style="background-color: #d33535">{{ tasks_status_count.reviewing }}</span>
+            </span>
+          </h2>
+        </div>
+        <hr>
+        <div class="row justify-content-center">
+          <h2 class="mr-2">
+            <span class="badge rounded-pill text-light" style="background-color: #688884">
+              Workers
+              <span class="badge rounded-pill" style="background-color: #3a5753">{{ workers.count }}</span>
+            </span>
+          </h2>
+          <h2 class="mr-2">
+            <span class="badge rounded-pill text-light" style="background-color: #606d8d">
+              Tasks
+              <span class="badge rounded-pill" style="background-color: #313f69">{{ tasks_count }}</span>
+            </span>
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="card my-4">
+      <div class="card-header bg-dark text-light">
+        <h3 class="text-center mb-0">Workers</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          {% for worker in workers %}
+            <div class="col-md-6 col-lg-4">
+              <div class="card mb-3">
+                <a class="link-underline-opacity-0 text-dark" href="{% url 'tasks:worker-detail' worker.id %}">
+                  <div class="card-body">
+                    <h4 class="card-title">{{ worker.get_full_name }}</h4>
+                    <p class="card-text">{{ worker.position.name }}</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

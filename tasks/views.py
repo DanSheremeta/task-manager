@@ -11,7 +11,25 @@ from tasks.forms import (
     TaskForm,
     TaskNameSearchForm,
 )
-from tasks.models import Task, Position
+from tasks.models import Position, Task
+
+from django.views.generic import TemplateView
+from django.db.models import Count
+
+
+class HomePageView(TemplateView):
+    template_name = "tasks/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["workers"] = get_user_model().objects.all().prefetch_related("tasks__task_type")
+
+        tasks_status_count = Task.objects.values("status").annotate(total=Count("status")).order_by("status")
+        context["tasks_status_count"] = {task["status"]: task["total"] for task in tasks_status_count}
+        context["tasks_count"] = Task.objects.count()
+
+        return context
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
