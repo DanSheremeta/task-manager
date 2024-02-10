@@ -24,10 +24,18 @@ class HomePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["workers"] = get_user_model().objects.all().prefetch_related("tasks__task_type")
+        context["workers"] = (
+            get_user_model().objects.all().prefetch_related("tasks__task_type")
+        )
 
-        tasks_status_count = Task.objects.values("status").annotate(total=Count("status")).order_by("status")
-        context["tasks_status_count"] = {task["status"]: task["total"] for task in tasks_status_count}
+        tasks_status_count = (
+            Task.objects.values("status")
+            .annotate(total=Count("status"))
+            .order_by("status")
+        )
+        context["tasks_status_count"] = {
+            task["status"]: task["total"] for task in tasks_status_count
+        }
         context["tasks_count"] = Task.objects.count()
 
         return context
@@ -44,9 +52,13 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
         name = self.request.GET.get("name", "")
 
-        context["search_form"] = TaskListView(
-            initial={"name": name}
-        )
+        context["search_form"] = TaskListView(initial={"name": name})
+        context["statuses"] = [
+            ("to_do", "#7d73d0", "To Do"),
+            ("in_progress", "#7696d9", "In Progress"),
+            ("reviewing", "#5eb4c2", "Reviewing"),
+            ("completed", "#5ab090", "Completed"),
+        ]
         return context
 
     def get_queryset(self):
@@ -54,9 +66,7 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         form = TaskNameSearchForm(self.request.GET)
 
         if form.is_valid():
-            return queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
 
 
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -64,10 +74,7 @@ class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = TaskForm
 
     def get_success_url(self):
-        return reverse_lazy(
-            "tasks:task-detail",
-            kwargs={"pk": self.kwargs["pk"]}
-        )
+        return reverse_lazy("tasks:task-detail", kwargs={"pk": self.kwargs["pk"]})
 
 
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -84,6 +91,12 @@ class WorkerTaskListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(WorkerTaskListView, self).get_context_data(**kwargs)
         context["only_current_user"] = True
+        context["statuses"] = [
+            ("to_do", "#7d73d0", "To Do"),
+            ("in_progress", "#7696d9", "In Progress"),
+            ("reviewing", "#5eb4c2", "Reviewing"),
+            ("completed", "#5ab090", "Completed"),
+        ]
         return context
 
     def get_queryset(self):
@@ -102,16 +115,15 @@ class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "tasks/worker_form.html"
 
     def get_success_url(self):
-        return reverse_lazy(
-            "tasks:worker-detail",
-            kwargs={"pk": self.kwargs["pk"]}
-        )
+        return reverse_lazy("tasks:worker-detail", kwargs={"pk": self.kwargs["pk"]})
 
     def get_object(self, queryset=None):
         obj = super(WorkerUpdateView, self).get_object(queryset=queryset)
 
         if obj != self.request.user:
-            raise PermissionDenied("You don't have permission to update info about this worker!")
+            raise PermissionDenied(
+                "You don't have permission to update info about this worker!"
+            )
         return obj
 
 
@@ -141,15 +153,13 @@ class WorkerRegistrationView(View):
         positions = Position.objects.all()
         form = WorkerCreationForm()
         return render(
-            request,
-            self.template_name,
-            {"form": form, "positions": positions}
+            request, self.template_name, {"form": form, "positions": positions}
         )
 
     def post(self, request, *args, **kwargs):
         form = WorkerCreationForm(request.POST)
         if form.is_valid():
-            position_id = request.POST.get('position')
+            position_id = request.POST.get("position")
             position = Position.objects.get(pk=position_id)
             user = form.save(commit=False)
             user.position = position
@@ -159,7 +169,5 @@ class WorkerRegistrationView(View):
         else:
             positions = Position.objects.all()
             return render(
-                request,
-                self.template_name,
-                {"form": form, "positions": positions}
+                request, self.template_name, {"form": form, "positions": positions}
             )
