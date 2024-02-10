@@ -1,5 +1,6 @@
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views import generic
 from django.shortcuts import render, redirect
@@ -107,7 +108,11 @@ class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
         )
 
     def get_object(self, queryset=None):
-        return self.request.user
+        obj = super(WorkerUpdateView, self).get_object(queryset=queryset)
+
+        if obj != self.request.user:
+            raise PermissionDenied("You don't have permission to update info about this worker!")
+        return obj
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
