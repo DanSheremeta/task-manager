@@ -65,6 +65,7 @@ class Task(models.Model):
     )
     priority = models.CharField(
         max_length=50,
+        default="low",
         choices=PRIORITY_CHOICES,
     )
     task_type = models.ForeignKey(
