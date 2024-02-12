@@ -5,39 +5,43 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container">
-
+  <div class="container col-sm-8 mb-3">
     <div class="card">
       <div class="card-header bg-dark text-light">
-        <h3 class="text-center mb-0">Statistics</h3>
+        <h2 class="text-center mb-0">Statistics</h2>
       </div>
       <div class="card-body">
         <div class="row justify-content-center">
           <h2 class="mr-2">
             <span class="badge rounded-pill text-light" style="background-color: #7d73d0">
               To Do
-              <span class="badge rounded-pill" style="background-color: #4c3db9">{{ tasks_status_count.to_do }}</span>
+              <span class="badge rounded-pill"
+                    style="background-color: #4c3db9">{% if not tasks_status_count.to_do %}0{% else %}
+                {{ tasks_status_count.to_do }}{% endif %}</span>
             </span>
           </h2>
           <h2 class="mr-2">
             <span class="badge rounded-pill text-light" style="background-color: #7696d9">
               In Progress
               <span class="badge rounded-pill"
-                    style="background-color: #3a64c4">{{ tasks_status_count.in_progress }}</span>
+                    style="background-color: #3a64c4">{% if not tasks_status_count.in_progress %}0{% else %}
+                {{ tasks_status_count.in_progress }}{% endif %}</span>
             </span>
           </h2>
           <h2 class="mr-2">
             <span class="badge rounded-pill text-light" style="background-color: #5eb4c2">
               Reviewing
               <span class="badge rounded-pill"
-                    style="background-color: #278a9a">{{ tasks_status_count.reviewing }}</span>
+                    style="background-color: #278a9a">{% if not tasks_status_count.reviewing %}0{% else %}
+                {{ tasks_status_count.reviewing }}{% endif %}</span>
             </span>
           </h2>
           <h2 class="mr-2">
             <span class="badge rounded-pill text-light" style="background-color: #5ab090">
               Completed
               <span class="badge rounded-pill"
-                    style="background-color: #308665">{{ tasks_status_count.completed }}</span>
+                    style="background-color: #308665">{% if not tasks_status_count.completed %}0{% else %}
+                {{ tasks_status_count.completed }}{% endif %}</span>
             </span>
           </h2>
         </div>
@@ -84,7 +88,7 @@
 
     <div class="card my-4">
       <div class="card-header bg-dark text-light">
-        <h3 class="text-center mb-0">Workers</h3>
+        <h2 class="text-center mb-0">Workers</h2>
       </div>
       <div class="card-body">
         <div class="row">
