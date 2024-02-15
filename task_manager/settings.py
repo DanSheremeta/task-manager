@@ -10,15 +10,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-v$s9n8xuve$009k8y@vd=)!&a%8^*h*yav6+ln%@u-b*#0_wtz")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "") is not False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -97,7 +96,7 @@ AUTH_USER_MODEL = "tasks.Worker"
 
 LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/login/"
-LOGIN_REDIRECT_URL = ""
+LOGIN_REDIRECT_URL = "/"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
