@@ -1,5 +1,6 @@
-from django.contrib.auth import login, get_user_model
+from django.contrib.auth import login as auth_login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views import generic
@@ -9,6 +10,7 @@ from django.views import View
 from tasks.forms import (
     WorkerCreationForm,
     WorkerUpdateForm,
+    WorkerLoginForm,
     TaskForm,
     TaskNameSearchForm,
 )
@@ -18,7 +20,7 @@ from django.views.generic import TemplateView
 from django.db.models import Count
 
 
-class HomePageView(TemplateView):
+class HomePageView(LoginRequiredMixin, TemplateView):
     template_name = "tasks/home.html"
 
     def get_context_data(self, **kwargs):
@@ -164,10 +166,26 @@ class WorkerRegistrationView(View):
             user = form.save(commit=False)
             user.position = position
             user.save()
-            login(request, user)
+            auth_login(request, user)
             return redirect("tasks:task-list")
         else:
             positions = Position.objects.all()
             return render(
                 request, self.template_name, {"form": form, "positions": positions}
             )
+
+
+class WorkerLoginView(LoginView):
+    authentication_form = WorkerLoginForm
+    template_name = "registration/login.html"
+    success_url = reverse_lazy("tasks:home")
+
+    def form_valid(self, form):
+        remember_me = form.cleaned_data.get("remember_me")
+        if remember_me is True:
+            self.request.session.set_expiry(60 * 60 * 24 * 14)  # 14 days
+        else:
+            self.request.session.set_expiry(0)  # After closing browser
+
+        auth_login(self.request, form.get_user())
+        return super().form_valid(form)

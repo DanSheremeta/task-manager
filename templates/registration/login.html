@@ -27,13 +27,17 @@
               <label for="id_password" class="form-label text-secondary">Password</label>
               <input type="password" name="password" id="id_password" class="form-control" required>
             </div>
+            <div class="custom-control custom-checkbox m-3">
+              <input type="checkbox" name="remember_me" id="id_remember_me" class="custom-control-input">
+              <label for="id_remember_me" class="custom-control-label text-secondary">Remember me</label>
+            </div>
             <div class="d-grid text-center">
               <button type="submit" class="btn btn-outline-secondary pr-3 pl-3 rounded-pill">Login</button>
             </div>
           </form>
         </div>
         <div class="card-footer text-center">
-          <p class="mb-0">Don't have an account? <a href="{% url 'tasks:worker-registration' %}">Register here</a></p>
+          <p class="mb-0">Don't have an account? <a href="{% url 'tasks:registration' %}">Register here</a></p>
         </div>
       </div>
     </div>

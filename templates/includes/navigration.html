@@ -25,7 +25,7 @@
           <a class="nav-link" href="{% url 'tasks:worker-detail' user.id %}">{{ user.get_username }}</a>
         </li>
         <li class="nav-item">
-          <form method="post" action="{% url 'logout' %}?next={{ request.path }}">
+          <form method="post" action="{% url 'tasks:logout' %}?next={{ request.path }}">
             {% csrf_token %}
             <button type="submit" class="btn btn-outline-danger rounded-pill">Logout</button>
           </form>
@@ -34,10 +34,10 @@
     {% else %}
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'login' %}">Login</a>
+          <a class="nav-link" href="{% url 'tasks:login' %}">Login</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'tasks:worker-registration' %}">Sign up</a>
+          <a class="nav-link" href="{% url 'tasks:registration' %}">Sign up</a>
         </li>
       </ul>
     {% endif %}

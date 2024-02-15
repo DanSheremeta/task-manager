@@ -95,8 +95,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "tasks.Worker"
 
-LOGOUT_REDIRECT_URL = "accounts/login"
-LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "/login/"
+LOGOUT_REDIRECT_URL = "/login/"
+LOGIN_REDIRECT_URL = ""
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
