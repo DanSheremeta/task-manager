@@ -50,21 +50,31 @@
           <h2 class="mr-2">
             <span class="badge rounded-pill text-light" style="background-color: #7bb9ff">
               Low
-              <span class="badge rounded-pill" style="background-color: #4793ea">{{ tasks_status_count.to_do }}</span>
+              <span class="badge rounded-pill" style="background-color: #4793ea">
+                {% if not tasks_priority_count.low %}0{% else %}
+                  {{ tasks_priority_count.low }}
+                {% endif %}
+              </span>
             </span>
           </h2>
           <h2 class="mr-2">
             <span class="badge rounded-pill text-light" style="background-color: #faba50">
               Medium
-              <span class="badge rounded-pill"
-                    style="background-color: #ce8f1b">{{ tasks_status_count.in_progress }}</span>
+              <span class="badge rounded-pill" style="background-color: #ce8f1b">
+                {% if not tasks_priority_count.Medium %}0{% else %}
+                  {{ tasks_priority_count.medium }}
+                {% endif %}
+              </span>
             </span>
           </h2>
           <h2 class="mr-2">
             <span class="badge rounded-pill text-light" style="background-color: #fa6b6b">
               High
-              <span class="badge rounded-pill"
-                    style="background-color: #d33535">{{ tasks_status_count.reviewing }}</span>
+              <span class="badge rounded-pill" style="background-color: #d33535">
+                {% if not tasks_priority_count.high %}0{% else %}
+                  {{ tasks_priority_count.high }}
+                {% endif %}
+              </span>
             </span>
           </h2>
         </div>

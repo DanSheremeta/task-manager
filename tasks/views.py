@@ -35,8 +35,17 @@ class HomePageView(LoginRequiredMixin, TemplateView):
             .annotate(total=Count("status"))
             .order_by("status")
         )
+        tasks_priority_count = (
+            Task.objects.values("priority")
+            .annotate(total=Count("priority"))
+            .order_by("priority")
+        )
+
         context["tasks_status_count"] = {
             task["status"]: task["total"] for task in tasks_status_count
+        }
+        context["tasks_priority_count"] = {
+            task["priority"]: task["total"] for task in tasks_priority_count
         }
         context["tasks_count"] = Task.objects.count()
 
