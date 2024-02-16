@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+<title>Create task</title>
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-5 ">
+      <div class="card">
+        <div class="card-header text-center bg-dark text-light">
+          <h2>{{ object|yesno:"Edit,Add" }} task</h2>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="d-grid text-center">
+              <button type="submit" class="btn btn-outline-success pr-3 pl-3 rounded-pill">{{ object|yesno:"Edit,Add" }} task</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

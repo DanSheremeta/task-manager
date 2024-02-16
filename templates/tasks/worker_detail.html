@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+  <title>Profile</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <div class="card">
+          <h2 class="card-header bg-dark text-light text-center">
+            Profile info
+          </h2>
+          <div class="card-body">
+            <h4 class="card-title font-weight-bolder">{{ worker.get_full_name }}</h4>
+            <p class="card-text"><strong>Username:</strong> {{ worker.username }}</p>
+            <p class="card-text"><strong>Position:</strong> {{ worker.position.name }}</p>
+            <p class="card-text"><strong>Email:</strong> {{ worker.email }}</p>
+            <p class="card-text"><strong>
+              {% if user.id == worker.id %}You{% else %}{{ worker.first_name }}{% endif %} are submited in {{ worker.tasks.count }}
+              task{{ worker.tasks.count|pluralize }}.</strong></p>
+          </div>
+
+          {% if user.id == worker.id %}
+            <div class="card-body m-auto">
+              <a href="{% url 'tasks:worker-task-list' %}" class="btn btn-info rounded-pill">Your tasks</a>
+              <a href="{% url 'tasks:worker-update' user.id %}" class="btn btn-secondary rounded-pill">Change your
+                profile</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+  <title>Task view</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{{ task.name }}</h4>
+        <p class="card-text">{{ task.description }}</p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Deadline:</strong> {{ task.deadline }}</li>
+          <li class="list-group-item">
+            <strong>Priority:</strong>
+            {% if task.priority == "low" %}
+              <span class="badge rounded-pill text-dark"
+                    style="background-color: #7bb9ff">{{ task.priority }}</span>
+            {% elif task.priority == "medium" %}
+              <span class="badge rounded-pill text-dark"
+                    style="background-color: #faba50">{{ task.priority }}</span>
+            {% else %}
+              <span class="badge rounded-pill text-dark"
+                    style="background-color: #fa6b6b">{{ task.priority }}</span>
+            {% endif %}
+          </li>
+          <li class="list-group-item"><strong>Type:</strong> {{ task.task_type.name }}</li>
+          <li class="list-group-item">
+            <strong>Assignees:</strong>
+            {% for assignee in task.assignees.all %}
+              {{ assignee.get_full_name }}
+              {% if not forloop.last %},{% endif %}
+            {% endfor %}
+          </li>
+        </ul>
+        <div class="mt-3">
+          <strong>Status:</strong>
+          {% if task.status == "to_do" %}
+            <span class="badge text-light rounded-pill" style="background-color: #7d73d0">
+              To Do
+            </span>
+          {% elif task.status == "in_progress" %}
+            <span class="badge text-light rounded-pill" style="background-color: #7696d9">
+              In Progress
+            </span>
+          {% elif task.status == "reviewing" %}
+            <span class="badge text-light rounded-pill" style="background-color: #5eb4c2">
+              Reviewing
+            </span>
+          {% elif task.status == "completed" %}
+            <span class="badge text-light rounded-pill" style="background-color: #5ab090">
+              Completed
+            </span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-footer text-muted text-center">
+        <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-secondary rounded-pill">Edit</a>
+        <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger rounded-pill">Delete</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
