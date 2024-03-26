@@ -3,7 +3,7 @@
 Django project for managing tasks in IT company. It helps you handle all 
 working process in your team
 
-## Chack it out!
+## Check it out!
 
 [Task Manager deployed to Render](https://task-manager-b721.onrender.com/)
 
